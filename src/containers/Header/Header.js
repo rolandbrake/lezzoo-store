@@ -8,6 +8,7 @@ import logo from "../../assets/img/logo-icon.png";
 
 import WbSunnyOutlinedIcon from "@material-ui/icons/WbSunnyOutlined";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
+import InvertColorsIcon from "@material-ui/icons/InvertColors";
 
 import Image from "../../components/Image/Image";
 import { withRouter } from "react-router-dom";
@@ -44,14 +45,21 @@ const Header = ({ classes, mode, changeMode, history, location }) => {
           </Grid>
           <Typography>ADMIN PANEL</Typography>
 
-          <IconButton
-            onClick={handleChangeMode}
-            title={
-              mode === "light" ? "switch to dark mode" : "switch to light mode"
-            }
-          >
-            {mode === "light" ? <Brightness3Icon /> : <WbSunnyOutlinedIcon />}
-          </IconButton>
+          <Grid item>
+            <IconButton title="change the main color">
+              <InvertColorsIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleChangeMode}
+              title={
+                mode === "light"
+                  ? "switch to dark mode"
+                  : "switch to light mode"
+              }
+            >
+              {mode === "light" ? <Brightness3Icon /> : <WbSunnyOutlinedIcon />}
+            </IconButton>
+          </Grid>
         </Grid>
       </Toolbar>
     </AppBar>

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Card from "./components/Card/Card";
 
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
@@ -62,6 +63,11 @@ function App({ mode, color }) {
       <React.Fragment>
         <CssBaseline />
         <Header />
+        <Card
+          title="HUGO BOSS"
+          description="Lizards are a widespread group of squamate reptiles, with over 6,000
+            species, ranging across all continents except Antarctica"
+        />
         <PageNotFound />
         <Footer />
         <ScrollTop>
