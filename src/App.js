@@ -8,6 +8,11 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import { connect } from "react-redux";
 
+import Fab from "@material-ui/core/Fab";
+import ScrollTop from "./ScrollTop";
+
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Header from "./containers/Header/Header";
 import Footer from "./containers/Footer/Footer";
@@ -59,6 +64,16 @@ function App({ mode, color }) {
         <Header />
         <PageNotFound />
         <Footer />
+        <ScrollTop>
+          <Fab
+            size="small"
+            aria-label="scroll back to top"
+            color="primary"
+            className={classes.fab}
+          >
+            <KeyboardArrowUpIcon color="inherit" />
+          </Fab>
+        </ScrollTop>
       </React.Fragment>
     </ThemeProvider>
   );

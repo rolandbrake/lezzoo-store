@@ -6,8 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "../../components/Button/IconButton";
 import logo from "../../assets/img/logo-icon.png";
 
-import Link from "../../components/Link/Link";
-
 import WbSunnyOutlinedIcon from "@material-ui/icons/WbSunnyOutlined";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 
@@ -16,7 +14,6 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import headerStyle from "../../assets/jss/containers/headerStyle";
 import { connect } from "react-redux";
-import { LocalDiningOutlined } from "@material-ui/icons";
 
 const Header = ({ classes, mode, changeMode, history, location }) => {
   const handleChangeMode = () =>
