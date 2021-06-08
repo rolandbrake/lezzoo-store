@@ -1,7 +1,7 @@
 import React from "react";
-
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 function App() {
-  return <div className="App" />;
+  return <PageNotFound />;
 }
 
 export default App;
