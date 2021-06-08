@@ -36,7 +36,7 @@ const PageNotFound = ({ classes, width }) => {
           size="larg"
           className={classes.button}
         >
-          Back Home
+          Admin Panel
         </Button>
       </Link>
     </Grid>
