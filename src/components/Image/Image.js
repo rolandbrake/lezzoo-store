@@ -3,14 +3,7 @@ import Link from "../Link/Link";
 import { connect } from "react-redux";
 
 const Image = ({ src, alt = "", to, mode, classes, ...rest }) => {
-  const Img = (
-    <img
-      alt={alt}
-      src={src instanceof Array ? (mode === "light" ? src[0] : src[1]) : src}
-      className={classes.image}
-      {...rest}
-    />
-  );
+  const Img = <img alt={alt} src={src} className={classes.image} {...rest} />;
   return (
     <>
       {to ? (

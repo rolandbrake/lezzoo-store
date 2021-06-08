@@ -1,10 +1,10 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Button from "../../components/Button/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "../../components/Button/IconButton";
+import logo from "../../assets/img/logo-icon.png";
 
 import Link from "../../components/Link/Link";
 
@@ -16,6 +16,7 @@ import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import headerStyle from "../../assets/jss/containers/headerStyle";
 import { connect } from "react-redux";
+import { LocalDiningOutlined } from "@material-ui/icons";
 
 const Header = ({ classes, mode, changeMode, history, location }) => {
   const handleChangeMode = () =>
@@ -27,22 +28,24 @@ const Header = ({ classes, mode, changeMode, history, location }) => {
       id="back-to-top-anchor"
       className={classes.appBar}
     >
-      <Toolbar>
+      <Toolbar className={classes.toolBar}>
         <Grid
-          item
           container
-          justify="flex-start"
+          justify="space-between"
           alignItems="center"
           className={classes.container}
         >
-          <Image
-            src={[light_logo, dark_logo]}
-            to="/home"
-            classes={{
-              image: classes.image,
-              link: classes.imageLink,
-            }}
-          />
+          <Grid item>
+            <Image
+              src={logo}
+              to="/"
+              classes={{
+                image: classes.image,
+                link: classes.imageLink,
+              }}
+            />
+          </Grid>
+          <Typography>ADMIN PANEL</Typography>
 
           <IconButton
             onClick={handleChangeMode}
