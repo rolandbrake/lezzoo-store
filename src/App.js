@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
@@ -23,6 +23,10 @@ import Footer from "./containers/Footer/Footer";
 
 import { compose } from "redux";
 import { retrieveStores } from "./actions/storesAction";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const useStyles = makeStyles((theme) => ({
   fab: {
     borderRadius: 3,
@@ -88,6 +92,17 @@ function App({ mode, color, onRetriveStores }) {
           />
           <Route component={PageNotFound} />
         </Switch>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <Footer />
         <ScrollTop>
           <Fab

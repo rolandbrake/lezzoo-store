@@ -35,6 +35,7 @@ const Card = ({
   description,
   price,
   id,
+  categoryId,
   handleEdit,
   handleDelete,
   handleClick,
@@ -54,8 +55,13 @@ const Card = ({
           {description}
         </Typography>
         {price && (
-          <Typography variant="body2" color="primary" component="p">
-            {price}
+          <Typography
+            style={{ marginTop: 16 }}
+            variant="h4"
+            color="primary"
+            component="p"
+          >
+            ${price}
           </Typography>
         )}
       </CardContent>
@@ -70,7 +76,7 @@ const Card = ({
             See More
           </Button>
           <Grid item>
-            <IconButton title="edit content" onClick={handleEdit}>
+            <IconButton title="edit content" onClick={() => setOpenForm(true)}>
               <EditIcon fontSize="small" />
             </IconButton>
             <IconButton
@@ -92,6 +98,8 @@ const Card = ({
       />
       <SubmitForm
         open={openForm}
+        id={id}
+        categoryId={categoryId}
         handleClose={() => setOpenForm(false)}
         handleSubmit={handleEdit}
       />

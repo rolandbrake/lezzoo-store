@@ -1,8 +1,8 @@
 import http from "../httpClient";
 
 class ProductService {
-  getAll() {
-    return http.get("/products");
+  getAll(categoryId) {
+    return http.get(`/products/${categoryId}`);
   }
 
   get(id) {

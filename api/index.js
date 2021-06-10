@@ -28,14 +28,14 @@ app.put("/api/v1/stores/:id", updateStore);
 app.delete("/api/v1/stores/:id", deleteStore);
 
 const {
-  getCategory,
+  // getCategory,
   getStoreCategories,
   createCategory,
   updateCategory,
   deleteCategory,
 } = require("./handlers/categories");
 
-app.get("/api/v1/categories/:id", getCategory);
+// app.get("/api/v1/categories/:id", getCategory);
 app.get("/api/v1/categories/:storeId", getStoreCategories);
 
 app.post("/api/v1/categories", createCategory);
@@ -45,14 +45,14 @@ app.put("/api/v1/categories/:id", updateCategory);
 app.delete("/api/v1/categories/:id", deleteCategory);
 
 const {
-  getProduct,
+  // getProduct,
   getCategoryProducts,
   createProduct,
   updateProduct,
   deleteProduct,
 } = require("./handlers/products");
 
-app.get("/api/v1/products/:id", getProduct);
+// app.get("/api/v1/products/:id", getProduct);
 app.get("/api/v1/products/:categoryId", getCategoryProducts);
 
 app.post("/api/v1/products", createProduct);

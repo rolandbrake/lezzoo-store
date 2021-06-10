@@ -27,7 +27,7 @@ exports.createProduct = (req, res) => {
 };
 
 exports.updateProduct = (req, res) => {
-  const sql = `UPDATE products SET title = "${req.body.title}", description = "${req.body.description}",price = "${req.body.price}" imageURL = "${req.body.imageURL}" WHERE id = ${req.params.id};`;
+  const sql = `UPDATE products SET title = "${req.body.title}", description = "${req.body.description}",price = ${req.body.price}, imageURL = "${req.body.imageURL}" WHERE id = ${req.params.id};`;
   db.query(sql, (err, result) => {
     if (err) {
       res.status(400).send(err);

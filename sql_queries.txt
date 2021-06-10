@@ -1,0 +1,30 @@
+CREATE TABLE stores (
+		    id int(6) NOT NULL AUTO_INCREMENT,   
+		    title VARCHAR(32),
+		    description TEXT NOT NULL,
+		    imageURL TEXT NOT NULL,
+		    PRIMARY KEY (id)		    
+		)
+
+
+CREATE TABLE categories (
+    id int(6) NOT NULL AUTO_INCREMENT,   
+    storeId int(6) NOT NULL,
+    title VARCHAR(32),
+    description TEXT NOT NULL,
+    imageURL TEXT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (storeId) REFERENCES stores(id) ON DELETE CASCADE 
+)
+
+
+CREATE TABLE products (
+    id int(6) NOT NULL AUTO_INCREMENT,   
+    categoryId int(6) NOT NULL,
+    title VARCHAR(32),
+    description TEXT NOT NULL,
+    imageURL TEXT NOT NULL,
+    price int(6) NOT NULL,
+    PRIMARY KEY (id),		
+    FOREIGN KEY (categoryId) REFERENCES categories(id) ON DELETE CASCADE  
+)

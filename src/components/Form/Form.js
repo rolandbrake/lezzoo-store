@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import withWidth from "@material-ui/core/withWidth";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -32,10 +33,15 @@ export const SubmitForm = ({
   width,
   open,
   id,
+  storeId,
+  categoryId,
   handleClose,
   handleSubmit,
 }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const initialValues = { title: "", description: "", image: "" };
+  if (categoryId) initialValues.price = "";
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .max(32, "Must be shorter than 32 character")
@@ -62,14 +68,47 @@ export const SubmitForm = ({
         SUBMIT
       </Typography>
       <Formik
-        initialValues={{ title: "", description: "", image: "" }}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, setFieldError }) => {
-          const { title, description, image } = values;
-          if (id) handleSubmit(id, { title, description, imageURL: image });
-          else handleSubmit({ title, description, imageURL: image });
-          setSubmitting(false);
-          handleClose();
+          const { title, description, image, price } = values;
+          if (id) {
+            console.log({ id });
+            dispatch(
+              handleSubmit(id, {
+                title,
+                description,
+                imageURL: image,
+                ...(categoryId && { price: parseInt(price) }),
+              })
+            )
+              .then((res) => {
+                toast.success("the item was edited successfuly");
+                setSubmitting(false);
+                handleClose();
+              })
+              .catch((err) =>
+                toast.error("something went wrong, please try again")
+              );
+          } else
+            dispatch(
+              handleSubmit({
+                title,
+                description,
+                imageURL: image,
+                ...(categoryId && { price: parseInt(price) }),
+                ...(storeId && { storeId }),
+                ...(categoryId && { categoryId }),
+              })
+            )
+              .then((res) => {
+                toast.success("the item was added successfuly");
+                setSubmitting(false);
+                handleClose();
+              })
+              .catch((err) =>
+                toast.error("something went wrong, please try again")
+              );
         }}
       >
         {({ values, errors, isSubmitting }) => (
@@ -87,6 +126,14 @@ export const SubmitForm = ({
                 placeholder="Enter your description"
                 error={errors.description}
               />
+              {categoryId && (
+                <Input
+                  title="price"
+                  name="price"
+                  placeholder="Enter product price"
+                  error={errors.price}
+                />
+              )}
               <Input
                 title="image"
                 name="image"

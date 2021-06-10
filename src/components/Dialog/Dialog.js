@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../Button/Button";
 import MuiDialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -7,12 +7,16 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { Typography } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Dialog = ({ open, id, handleClose, handleDelete }) => {
+  const dispatch = useDispatch();
+  const [submitting, setSubmitting] = useState(false);
   return (
     <MuiDialog
       open={open}
@@ -28,9 +32,19 @@ const Dialog = ({ open, id, handleClose, handleDelete }) => {
       </DialogContent>
       <DialogActions>
         <Button
+          loading={submitting}
           onClick={() => {
-            handleDelete(id);
-            handleClose();
+            setSubmitting(true);
+            dispatch(handleDelete(id))
+              .then((res) => {
+                toast.success("the item was deleted successfuly!");
+                setSubmitting(false);
+                handleClose();
+              })
+              .catch((err) => {
+                setSubmitting(false);
+                toast.error("something went wrong, please try again");
+              });
           }}
           color="primary"
         >

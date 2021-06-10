@@ -26,6 +26,7 @@ const categoryReducer = (categories = initialState, action) => {
             ...payload,
           };
         } else {
+          console.log(UPDATE_CATEGORY);
           return category;
         }
       });

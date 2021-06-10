@@ -5,6 +5,7 @@ import {
   deleteStore,
   updateStore,
 } from "../../actions/storesAction";
+import { retrieveCategories } from "../../actions/categoriesAction";
 import Card from "../../components/Card/Card";
 import Button from "../../components/Button/Button";
 import Grid from "@material-ui/core/Grid";
@@ -15,6 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import SubmitForm from "../../components/Form/Form";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -30,13 +32,15 @@ const useStyles = makeStyles((theme) => ({
 
 const StoresPage = ({
   stores,
-  onDeleteStore,
-  onCreateStore,
-  onUpdateStore,
+  deleteStore,
+  createStore,
+  updateStore,
+  retrieveCategories,
   width,
   history,
 }) => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const handleClose = () => setOpen(false);
   const classes = useStyles();
   return (
@@ -58,9 +62,13 @@ const StoresPage = ({
                 id={store.id}
                 description={store.description}
                 image={store.image}
-                handleDelete={onDeleteStore}
-                handleEdit={onUpdateStore}
-                handleClick={() => history.push(`/categories/${store.id}`)}
+                handleDelete={deleteStore}
+                handleEdit={updateStore}
+                handleClick={() => {
+                  dispatch(retrieveCategories(store.id)).then((res) =>
+                    history.push(`/categories/${store.id}`)
+                  );
+                }}
               />
             ))}
           </Grid>
@@ -80,7 +88,7 @@ const StoresPage = ({
       <SubmitForm
         open={open}
         handleClose={handleClose}
-        handleSubmit={onCreateStore}
+        handleSubmit={createStore}
       />
     </Grid>
   );
@@ -88,15 +96,10 @@ const StoresPage = ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateStore: (store) => {
-      dispatch(createStore(store));
-    },
-    onDeleteStore: (id) => {
-      dispatch(deleteStore(id));
-    },
-    onUpdateStore: (id, data) => {
-      dispatch(updateStore(id, data));
-    },
+    createStore,
+    deleteStore,
+    updateStore,
+    retrieveCategories,
   };
 };
 

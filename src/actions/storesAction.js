@@ -1,4 +1,5 @@
 import StoreService from "../services/StoreService";
+import { DELETE_STORE_CATEGORIES } from "./categoriesAction";
 
 export const CREATE_STORE = "CREATE_STORE";
 export const RETRIEVE_STORES = "RETRIEVE_STORES";
@@ -40,7 +41,7 @@ export const updateStore = (id, data) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_STORE,
-      payload: data,
+      payload: { id, ...data },
     });
 
     return Promise.resolve(res.data);
@@ -57,8 +58,13 @@ export const deleteStore = (id) => async (dispatch) => {
       type: DELETE_STORE,
       payload: { id },
     });
+    dispatch({
+      type: DELETE_STORE_CATEGORIES,
+      payload: { storeId: id },
+    });
+    return Promise.resolve();
   } catch (err) {
-    console.log(err);
+    return Promise.reject(err);
   }
 };
 
