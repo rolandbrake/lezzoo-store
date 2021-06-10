@@ -24,3 +24,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 3. after finishing, run the app using the command `npm start`
 4. go to the api folder which contain the backend logic and open new cmd then run `nodemon index.js`
 5. make sure to use the database contained inside the app folder (lezzoo_store_db.sql).
+6. make sure to change the db configurations inside api/dbConfig.js file
