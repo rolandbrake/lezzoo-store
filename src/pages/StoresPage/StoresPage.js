@@ -61,7 +61,7 @@ const StoresPage = ({
                 title={store.title}
                 id={store.id}
                 description={store.description}
-                image={store.image}
+                image={store.imageURL}
                 handleDelete={deleteStore}
                 handleEdit={updateStore}
                 handleClick={() => {

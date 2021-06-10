@@ -13,6 +13,7 @@ import withWidth from "@material-ui/core/withWidth";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
+import app from "../../config";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -40,7 +41,15 @@ export const SubmitForm = ({
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const initialValues = { title: "", description: "", image: "" };
+  const [disable, setDisable] = React.useState(false);
+  const [imageURL, setImageURL] = React.useState(
+    "https://via.placeholder.com/300x150"
+  );
+  const initialValues = {
+    title: "",
+    description: "",
+    // image: ,
+  };
   if (categoryId) initialValues.price = "";
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -49,8 +58,16 @@ export const SubmitForm = ({
     description: Yup.string()
       .max(255, "Must be shorter than 255 character")
       .required("Please Enter a description"),
-    image: Yup.string().required("Please Enter an image"),
   });
+  const onImageChange = async (e) => {
+    setDisable(true);
+    const image = e.target.files[0];
+    const storageRef = app.storage().ref();
+    const fileRef = storageRef.child(image.name);
+    await fileRef.put(image);
+    setImageURL(await fileRef.getDownloadURL());
+    setDisable(false);
+  };
   return (
     <Dialog
       TransitionComponent={Transition}
@@ -71,14 +88,13 @@ export const SubmitForm = ({
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, setFieldError }) => {
-          const { title, description, image, price } = values;
+          const { title, description, price } = values;
           if (id) {
-            console.log({ id });
             dispatch(
               handleSubmit(id, {
                 title,
                 description,
-                imageURL: image,
+                imageURL,
                 ...(categoryId && { price: parseInt(price) }),
               })
             )
@@ -87,15 +103,17 @@ export const SubmitForm = ({
                 setSubmitting(false);
                 handleClose();
               })
-              .catch((err) =>
-                toast.error("something went wrong, please try again")
-              );
+              .catch((err) => {
+                toast.error("something went wrong, please try again");
+                setSubmitting(false);
+                handleClose();
+              });
           } else
             dispatch(
               handleSubmit({
                 title,
                 description,
-                imageURL: image,
+                imageURL,
                 ...(categoryId && { price: parseInt(price) }),
                 ...(storeId && { storeId }),
                 ...(categoryId && { categoryId }),
@@ -106,12 +124,14 @@ export const SubmitForm = ({
                 setSubmitting(false);
                 handleClose();
               })
-              .catch((err) =>
-                toast.error("something went wrong, please try again")
-              );
+              .catch((err) => {
+                toast.error("something went wrong, please try again");
+                setSubmitting(false);
+                handleClose();
+              });
         }}
       >
-        {({ values, errors, isSubmitting }) => (
+        {({ values, errors, isSubmitting, setFieldValue }) => (
           <Form className={classes.form}>
             <Grid container direction="column">
               <Input
@@ -134,14 +154,17 @@ export const SubmitForm = ({
                   error={errors.price}
                 />
               )}
-              <Input
+              <input
+                style={{ padding: 16 }}
+                onChange={onImageChange}
                 title="image"
                 name="image"
                 type="file"
-                error={errors.image}
               />
+              <div>{errors.image}</div>
             </Grid>
             <Button
+              disabled={disable}
               className={classes.button}
               type="submit"
               variant="contained"

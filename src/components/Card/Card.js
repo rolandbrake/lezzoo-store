@@ -11,7 +11,6 @@ import IconButton from "../Button/IconButton";
 import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import img from "./boss.jpg";
 import Dialog from "../Dialog/Dialog";
 import SubmitForm from "../Form/Form";
 const useStyles = makeStyles({
@@ -46,7 +45,7 @@ const Card = ({
 
   return (
     <MuiCard className={classes.root}>
-      <CardMedia className={classes.media} image={img} />
+      <CardMedia className={classes.media} image={image} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {title}
