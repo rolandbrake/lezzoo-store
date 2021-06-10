@@ -61,7 +61,7 @@ const CategoriesPage = ({
                 categoryId={categoryId}
                 price={product.price}
                 description={product.description}
-                image={product.image}
+                image={product.imageURL}
                 handleDelete={deleteProduct}
                 handleEdit={updateProduct}
               />

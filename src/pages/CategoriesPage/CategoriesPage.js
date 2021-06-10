@@ -62,7 +62,7 @@ const CategoriesPage = ({
                 title={category.title}
                 id={category.id}
                 description={category.description}
-                image={category.image}
+                image={category.imageURL}
                 handleDelete={deleteCategory}
                 handleEdit={updateCategory}
                 handleClick={() => {
