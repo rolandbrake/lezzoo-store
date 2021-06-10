@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Card from "./components/Card/Card";
 
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
@@ -14,20 +13,25 @@ import ScrollTop from "./ScrollTop";
 
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
+import StoresPage from "./pages/StoresPage/StoresPage";
+import CategoriesPage from "./pages/CategoriesPage/CategoriesPage";
+import ProductsPage from "./pages/ProductsPage/ProductsPage";
+
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Header from "./containers/Header/Header";
 import Footer from "./containers/Footer/Footer";
 
 import { compose } from "redux";
-
+import { retrieveStores } from "./actions/storesAction";
 const useStyles = makeStyles((theme) => ({
   fab: {
     borderRadius: 3,
     boxShadow: "0 1px 2px 0 rgb(0 0 0 / 20%)",
   },
 }));
-function App({ mode, color }) {
+function App({ mode, color, onRetriveStores }) {
   const classes = useStyles();
+  useEffect(() => onRetriveStores(), []);
   const theme = React.useMemo(
     () =>
       createMuiTheme({
@@ -63,12 +67,27 @@ function App({ mode, color }) {
       <React.Fragment>
         <CssBaseline />
         <Header />
-        <Card
-          title="HUGO BOSS"
-          description="Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica"
-        />
-        <PageNotFound />
+        <Switch>
+          <Route
+            exact
+            path={"/"}
+            render={() => {
+              return <Redirect to={"/stores"} />;
+            }}
+          />
+          <Route exact path={"/stores"} component={StoresPage} />
+          <Route
+            exact
+            path={"/categories/:storeId"}
+            component={CategoriesPage}
+          />
+          <Route
+            exact
+            path={"/products/:categoryId"}
+            component={ProductsPage}
+          />
+          <Route component={PageNotFound} />
+        </Switch>
         <Footer />
         <ScrollTop>
           <Fab
@@ -89,5 +108,13 @@ const mapStateToProps = (state) => ({
   mode: state.paletteReducer.mode,
   color: state.paletteReducer.color,
 });
+const mapDispatchToProps = (dispatch) => ({
+  onRetriveStores: () => {
+    dispatch(retrieveStores());
+  },
+});
 
-export default compose(withRouter, connect(mapStateToProps, null))(App);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(App);

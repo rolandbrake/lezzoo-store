@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MuiCard from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
@@ -12,10 +12,13 @@ import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import img from "./boss.jpg";
-
+import Dialog from "../Dialog/Dialog";
+import SubmitForm from "../Form/Form";
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 300,
+    width: 250,
+    height: "100%",
     margin: 32,
   },
   media: {
@@ -26,12 +29,22 @@ const useStyles = makeStyles({
   },
 });
 
-const Card = ({ image, title, description }) => {
+const Card = ({
+  image,
+  title,
+  description,
+  price,
+  id,
+  handleEdit,
+  handleDelete,
+  handleClick,
+}) => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
   const classes = useStyles();
 
   return (
     <MuiCard className={classes.root}>
-      {/* <CardActionArea> */}
       <CardMedia className={classes.media} image={img} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
@@ -40,23 +53,48 @@ const Card = ({ image, title, description }) => {
         <Typography variant="body2" color="textSecondary" component="p">
           {description}
         </Typography>
+        {price && (
+          <Typography variant="body2" color="primary" component="p">
+            {price}
+          </Typography>
+        )}
       </CardContent>
-      {/* </CardActionArea> */}
       <CardActions>
         <Grid container justify="space-between" alignItems="center">
-          <Button className={classes.button} size="small" color="primary">
+          <Button
+            onClick={handleClick}
+            className={classes.button}
+            size="small"
+            color="primary"
+          >
             See More
           </Button>
           <Grid item>
-            <IconButton title="edit content">
+            <IconButton title="edit content" onClick={handleEdit}>
               <EditIcon fontSize="small" />
             </IconButton>
-            <IconButton title="delete content">
+            <IconButton
+              title="delete content"
+              onClick={() => {
+                setOpenDialog(true);
+              }}
+            >
               <DeleteForeverIcon fontSize="small" />
             </IconButton>
           </Grid>
         </Grid>
       </CardActions>
+      <Dialog
+        open={openDialog}
+        id={id}
+        handleClose={() => setOpenDialog(false)}
+        handleDelete={handleDelete}
+      />
+      <SubmitForm
+        open={openForm}
+        handleClose={() => setOpenForm(false)}
+        handleSubmit={handleEdit}
+      />
     </MuiCard>
   );
 };

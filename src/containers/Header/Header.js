@@ -16,7 +16,22 @@ import { withStyles } from "@material-ui/core/styles";
 import headerStyle from "../../assets/jss/containers/headerStyle";
 import { connect } from "react-redux";
 
-const Header = ({ classes, mode, changeMode, history, location }) => {
+const Header = ({
+  classes,
+  mode,
+  changeMode,
+  changeColor,
+  history,
+  location,
+}) => {
+  const COLORS = [
+    "#7431ca",
+    "#f50057",
+    "#2979ff",
+    "#f50057",
+    "#00e676",
+    "#00bcd4",
+  ];
   const handleChangeMode = () =>
     mode === "light" ? changeMode("dark") : changeMode("light");
   return (
@@ -46,7 +61,13 @@ const Header = ({ classes, mode, changeMode, history, location }) => {
           <Typography>ADMIN PANEL</Typography>
 
           <Grid item>
-            <IconButton title="change the main color">
+            <IconButton
+              onClick={() => {
+                const color = Math.floor(Math.random() * 6);
+                changeColor(COLORS[color]);
+              }}
+              title="change the main color"
+            >
               <InvertColorsIcon />
             </IconButton>
             <IconButton
@@ -71,6 +92,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeMode(mode) {
     dispatch({ type: "CHANGE_MODE", mode });
+  },
+  changeColor(color) {
+    dispatch({ type: "CHANGE_COLOR", color });
   },
 });
 export default connect(

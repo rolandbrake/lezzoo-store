@@ -1,109 +1,65 @@
 const express = require("express");
-const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 
 const cors = require("cors")({ origin: true });
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "lezzoo_store_db",
-});
-
-db.connect((err) => {
-  if (err) {
-    throw err;
-  }
-  console.log("Mysql connected...");
-});
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(cors);
 app.use(jsonParser); // use it globally
 
-app.post("/api/v1/stores", (req, res) => {
-  const sql = "INSERT INTO stores SET ?";
-  db.query(sql, req.body, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+const {
+  getStore,
+  getAllStores,
+  createStore,
+  updateStore,
+  deleteStore,
+} = require("./handlers/stores");
 
-app.delete("/api/v1/stores/:id", (req, res) => {
-  const sql = `DELETE FROM stores WHERE id=${req.params.id};`;
-  db.query(sql, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.get("/api/v1/stores/:id", getStore);
+app.get("/api/v1/stores/", getAllStores);
 
-app.get("/api/v1/stores/:id", (req, res) => {
-  const sql = `SELECT * FROM stores WHERE id = ${req.params.id}`;
-  db.query(sql, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.post("/api/v1/stores", createStore);
 
-app.get("/api/v1/stores/", (req, res) => {
-  const sql = `SELECT * FROM stores WHERE id BETWEEN ${req.body.start} AND ${req.body.end}`;
-  db.query(sql, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.put("/api/v1/stores/:id", updateStore);
 
-app.post("/api/v1/stores", (req, res) => {
-  const sql = "INSERT INTO stores SET ?";
-  db.query(sql, req.body, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.delete("/api/v1/stores/:id", deleteStore);
 
-app.post("/api/v1/gategories", (req, res) => {
-  const sql = "INSERT INTO stores SET ?";
-  db.query(sql, req.body, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+const {
+  getCategory,
+  getStoreCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} = require("./handlers/categories");
 
-app.get("/api/v1/gategories/:storeId", (req, res) => {
-  const sql = `SELECT * FROM stores WHERE storeId = ${req.params.storeId}`;
-  db.query(sql, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.get("/api/v1/categories/:id", getCategory);
+app.get("/api/v1/categories/:storeId", getStoreCategories);
 
-app.post("/api/v1/products", (req, res) => {
-  const sql = "INSERT INTO stores SET ?";
-  db.query(sql, req.body, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.post("/api/v1/categories", createCategory);
 
-app.get("/api/v1/products/:categoryId", (req, res) => {
-  const sql = `SELECT * FROM categories WHERE (categoryId = ${req.params.categoryId} AND id BETWEEN (${req.body.start} AND ${req.body.end}))`;
-  db.query(sql, (err, result) => {
-    if (err) {
-      res.status(400).send(err);
-    } else res.status(200).send(result);
-  });
-});
+app.put("/api/v1/categories/:id", updateCategory);
+
+app.delete("/api/v1/categories/:id", deleteCategory);
+
+const {
+  getProduct,
+  getCategoryProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} = require("./handlers/products");
+
+app.get("/api/v1/products/:id", getProduct);
+app.get("/api/v1/products/:categoryId", getCategoryProducts);
+
+app.post("/api/v1/products", createProduct);
+
+app.put("/api/v1/products/:id", updateProduct);
+
+app.delete("/api/v1/products/:id", deleteProduct);
 
 app.listen(PORT, () => {
   console.log(`Server started at port: ${PORT}`);
